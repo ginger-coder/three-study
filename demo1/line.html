@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>Drawing lines</title>
+    <style>
+        body {
+            margin: 0;
+        }
+    </style>
+</head>
+
+<body>
+    <script type="importmap">
+        {
+            "imports": {
+                "three": "../build/three.module.js",
+                "three/addons/": "../jsm/"
+            }
+        }
+    </script>
+    <script type="module">
+        import * as THREE from 'three';
+
+        import { FontLoader } from 'three/addons/loaders/FontLoader.js';
+        import { TextGeometry } from 'three/addons/geometries/TextGeometry.js';
+        import { GUI } from 'three/addons/libs/lil-gui.module.min.js';
+
+        const renderer = new THREE.WebGLRenderer();
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        document.body.appendChild(renderer.domElement);
+
+        const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 1, 500);
+        camera.position.set(0, 0, 100);
+        camera.lookAt(0, 0, 0);
+        // 创建场景
+        const scene = new THREE.Scene();
+
+        // //对于线条来说，我们能使用的材质只有LineBasicMaterial 或者 LineDashedMaterial。
+        // const material = new THREE.LineBasicMaterial({ color: 0x0000ff });
+
+        // // 定义好材质之后，我们需要一个带有一些顶点的geometry（几何体）
+        // const points = [];
+        // points.push(new THREE.Vector3(- 10, 0, 0));
+        // points.push(new THREE.Vector3(0, 10, 0));
+        // points.push(new THREE.Vector3(10, 0, 0));
+
+        // const geometry = new THREE.BufferGeometry().setFromPoints(points);
+
+        // const line = new THREE.Line(geometry, material);
+        // scene.add(line);
+
+        const loader = new FontLoader();
+        loader.load('../fonts/helvetiker_regular.typeface.json', function (font) {
+            const txtGeo = new TextGeometry('Hello three.js!', {
+                font: font,
+                size: 70,
+                height: 20,
+                curveSegments: 4,
+                bevelEnabled: true,
+                bevelThickness: 2,
+                bevelsize: 1.5,
+                bevelSegments: 3
+            });
+            txtGeo.computeBoundingBox();
+
+            var txtMater = new THREE.MeshBasicMaterial({ color: 0xffffff, opacity: 0.5, transparent: true });
+            var txtMesh = new THREE.Mesh(txtGeo, txtMater);
+            txtMesh.position.set(-2, 2.3, -0.4);
+            scene.add(txtMesh);
+        });
+        renderer.render(scene, camera);
+        
+    </script>
+</body>
+
+</html>
