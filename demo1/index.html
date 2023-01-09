@@ -25,7 +25,6 @@
 	<script type="module">
 		import * as THREE from 'three';
 		import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
-		import { ViewHelper } from 'three/addons/helpers/ViewHelper.js'
 		/**
 		 * 创建场景对象Scene
 		 */
@@ -43,9 +42,12 @@
 
 		// 立方体网格模型
 		var geometry1 = new THREE.BoxGeometry(100, 100, 100);
+		// 材质对象Material
 		var material1 = new THREE.MeshLambertMaterial({
-			color: 0x0000ff
-		}); //材质对象Material
+			color:0x0000ff,
+			specular:0x4488ee,
+			shininess:12
+		});
 		var mesh1 = new THREE.Mesh(geometry1, material1); //网格模型对象Mesh
 		scene.add(mesh1); //网格模型添加到场景中
 
@@ -53,17 +55,31 @@
 		var geometry2 = new THREE.SphereGeometry(60, 40, 40);
 		var material2 = new THREE.MeshLambertMaterial({
 			color: 0xff00ff
+		}); 
+		// 透明材质
+		var sphereMaterial = new THREE.MeshLambertMaterial({
+			color:0xff0000,
+			opacity:0.7,
+			transparent:true
 		});
-		var mesh2 = new THREE.Mesh(geometry2, material2); //网格模型对象Mesh
+		// 高光效果
+		var sphereMaterial2 = new THREE.MeshPhongMaterial({
+			color:0x0000ff,
+			specular:0x4488ee,
+			shininess:12
+		});
+		var mesh2 = new THREE.Mesh(geometry2, sphereMaterial2); //网格模型对象Mesh
 		mesh2.translateY(120); //球体网格模型沿Y轴正方向平移120
 		scene.add(mesh2);
 
 		// 圆柱网格模型
 		var geometry3 = new THREE.CylinderGeometry(50, 50, 100, 25);
-		var material3 = new THREE.MeshLambertMaterial({
-			color: 0xffff00
+		var material3 = new THREE.MeshPhongMaterial({
+			color: 0xffff00,
+			specular:0x4488ee,
+			shininess:12
 		});
-		var mesh3 = new THREE.Mesh(geometry3, material3); //网格模型对象Mesh
+		var mesh3 = new THREE.Mesh(geometry3, sphereMaterial2); //网格模型对象Mesh
 		// mesh3.translateX(120); //球体网格模型沿Y轴正方向平移120
 		mesh3.position.set(120, 0, 0);//设置mesh3模型对象的xyz坐标为120,0,0
 		scene.add(mesh3); //
@@ -77,7 +93,8 @@
 		 */
 		//点光源
 		var point = new THREE.PointLight(0xffffff);
-		point.position.set(200, 100, 300); //点光源位置
+		point.position.set(400, 100, 300); //点光源位置
+		// point.position.set(-400, -200, -300); //点光源位置
 		scene.add(point); //点光源添加到场景中
 		//环境光
 		var ambient = new THREE.AmbientLight(0x444444);
